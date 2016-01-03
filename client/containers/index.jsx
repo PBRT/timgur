@@ -7,10 +7,11 @@ let Index = (props) =>
     <div style={s.container}>
       <div style={s.logo}><Link to='home'>Timgur</Link></div>
       <div style={s.links}>
-        <div style={s.link}><Link to='todos'>Liked</Link></div>
+        <div style={s.link}><Link to='likes'>Liked</Link></div>
+        <div style={s.link}><Link to='swiper'>Swiper</Link></div>
       </div>
     </div>
-    {props.children}
+    <div style={s.children}>{props.children}</div>
   </div>);
 
 
@@ -22,6 +23,11 @@ function getStyle() {
       backgroundColor: UI.lightWhite,
       display: 'flex',
       alignItems: 'center',
+      position: 'fixed',
+      top: 0,
+    },
+    children: {
+      marginTop: 100,
     },
     logo: {
       flex: 'initial',

@@ -19,16 +19,22 @@ import { syncReduxAndRouter } from 'redux-simple-router';
 import Home from './containers/home.jsx';
 import NotFound from './containers/not-found.jsx';
 import Index from './containers/index.jsx';
-import Todos from './containers/Todos/todos.jsx';
+import Likes from './containers/Likes/images-liked.jsx';
+import ImagesSwiper from './containers/Images/image-swiper.jsx';
+
+import { fetchImages } from './actions/images.js';
 
 // Redux store
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
 
+store.dispatch(fetchImages());
+
 // Routing
 const history = createBrowserHistory();
 syncReduxAndRouter(history, store);
+
 
 // Main class - App
 let App = () => (
@@ -37,7 +43,8 @@ let App = () => (
       <Route path='/' component={Index}>
         <IndexRoute component={Home}/>
         <Route path='/home' component={Home}/>
-        <Route path='/todos' component={Todos}/>
+        <Route path='/likes' component={Likes}/>
+        <Route path='/swiper' component={ImagesSwiper}/>
       </Route>
       <Route path='*' component={NotFound}/>
     </Router>

@@ -12,7 +12,7 @@ let ImagesLiked = (props) => {
       <div style={s.title}>
         Image Liked
       </div>
-      {imageList.filter((image) => image.liked).map((image, index) => (
+      {imageList.filter((image) => image.isLiked).map((image, index) => (
         <ImageComp key={index} image={image} />
       ))}
     </div>
@@ -35,7 +35,7 @@ ImagesLiked.displayName = 'ImagesLiked';
 
 function select(state) {
   return {
-    imageList: state.images.images,
+    imageList: state.images.imageList,
   };
 }
 

@@ -22,14 +22,10 @@ import Index from './containers/index.jsx';
 import Likes from './containers/Likes/images-liked.jsx';
 import ImagesSwiper from './containers/Images/image-swiper.jsx';
 
-import { fetchImages } from './actions/images.js';
-
 // Redux store
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
-
-store.dispatch(fetchImages());
 
 // Routing
 const history = createBrowserHistory();

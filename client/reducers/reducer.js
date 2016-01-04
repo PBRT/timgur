@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import { routeReducer } from 'redux-simple-router';
-import { REQUEST_IMAGES, RECEIVE_IMAGES, LIKE_IMAGE, DISLIKE_IMAGE } from '../actions/images';
+import { REQUEST_IMAGES, RECEIVE_IMAGES, LIKE_IMAGE, DISLIKE_IMAGE } from 'images.js';
 
+// Handle the image object state
 function imageItem(state = {}, action) {
   switch (action.type) {
     case (RECEIVE_IMAGES):
@@ -12,17 +13,20 @@ function imageItem(state = {}, action) {
   }
 }
 
+// Handle the image list state
 function imageList(state = [], action) {
   switch (action.type) {
     case (RECEIVE_IMAGES):
-      let test = _.clone(state);
-      action.images.map((image) => test.push(imageItem(image, action)));
-      return test;
+      return [
+        ...state,
+        ...action.images.map((image) => imageItem(image, action))
+      ];
     case (DISLIKE_IMAGE):
-      let newState = _.clone(state);
-      const index = state.filter((image) => (image.id === action.image.id)).map((image) => state.indexOf(image));
-      newState.splice(index, 1);
-      return newState;
+      const index = state.filter((image) => (image.id === action.image.id)).map((image) => state.indexOf(image))[0];
+      return [
+        ...state.slice(0, index),
+        ...state.slice(index + 1)
+      ];
     case (LIKE_IMAGE):
       return state.map((image) => {
         return imageItem(image, action);
@@ -31,6 +35,7 @@ function imageList(state = [], action) {
   }
 }
 
+// Handle the images
 function images(state = {
   isFetching: false,
   pagination: 0,

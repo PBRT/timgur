@@ -1,7 +1,7 @@
 // Redux
-import { likeImage, dislikeImage } from '../../actions/images.js';
+import { likeImage, dislikeImage } from 'images.js';
 import { connect } from 'react-redux';
-import { fetchImagesIfNeeded } from '../../actions/images.js';
+import { fetchImagesIfNeeded } from 'images.js';
 import ImageComp from 'image-comp.jsx';
 
 let s = getStyle();
@@ -16,41 +16,43 @@ class ImagesSwiper extends React.Component{
     $(this.refs.like).velocity({rotateZ: '-35deg'});
     $(this.refs.dislike).velocity({rotateZ: '35deg'});
   }
+  // Check if need to fetch other images
   componentWillReceiveProps(nextProps) {
     if (this.props.imageList !== nextProps.imageList) {
       this.props.dispatch(fetchImagesIfNeeded());
     }
   }
+  // Handle animation and dispatch actions
   handleAction(image, type) {
-    if (type === 'like') {
-      $(this.refs.like).velocity({opacity: 1}, {
-        duration: 300,
-        complete: function() {
-          this.props.dispatch(likeImage(image));
-          $(this.refs.like).velocity({opacity: 0}, 0);
-        }.bind(this)});
-    } else if (type === 'dislike') {
-      $(this.refs.dislike).velocity({opacity: 1}, {
-        duration: 300,
-        complete: function() {
-          this.props.dispatch(dislikeImage(image));
-          $(this.refs.dislike).velocity({opacity: 0}, 0);
-        }.bind(this)});
-    }
+    $(this.refs[type]).velocity('stop');
+    $(this.refs[type]).velocity({opacity: 1}, {
+      duration: 300,
+      complete: function() {
+        if (type === 'like') { this.props.dispatch(likeImage(image));}
+        else if (type === 'dislike') { this.props.dispatch(dislikeImage(image)); }
+        $(this.refs[type]).velocity({opacity: 0}, 0);
+      }.bind(this)
+    });
   }
   render() {
     const { imageList } = this.props;
+    // The array is reversed to have the correct order displayed on the stack
     const imageListToDisplay = imageList.filter((image) => !image.isLiked).filter((img, index) => index < 5).reverse();
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
+
+    // Styles
+    const likeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightGreen});
+    const dislikeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightRed});
+
 
     return (
       <div style={s.container}>
         <div style={s.stack}>
           <div style={s.likeContainer} ref='like'>
-            <div style={s.likeTag}>LIKED</div>
+            <div style={likeTagStyle}>LIKED</div>
           </div>
           <div style={s.dislikeContainer} ref='dislike'>
-            <div style={s.dislikeTag}>DISLIKED</div>
+            <div style={dislikeTagStyle}>DISLIKED</div>
           </div>
           {imageListToDisplay.map((image, index) => {
             return (
@@ -105,8 +107,16 @@ function getStyle() {
       left: 0,
       position: 'absolute',
     },
+    tag: {
+      backgroundColor: UI.lightWhite,
+      borderRadius: 5,
+      padding: '0px 20px',
+      display: 'inline-block',
+      border: '3px solid',
+      paddingTop: 4,
+    },
     likeContainer: {
-      color: '#16a085',
+      color: UI.lightGreen,
       fontSize: 30,
       position: 'absolute',
       marginTop: 50,
@@ -116,16 +126,8 @@ function getStyle() {
       left: -50,
       opacity: 0,
     },
-    likeTag: {
-      backgroundColor: '#ecf0f1',
-      borderRadius: 5,
-      padding: '0px 20px',
-      display: 'inline-block',
-      border: '3px solid #16a085',
-      paddingTop: 4,
-    },
     dislikeContainer: {
-      color: '#FF6A67',
+      color: UI.lightRed,
       fontSize: 30,
       position: 'absolute',
       marginTop: 50,
@@ -135,14 +137,6 @@ function getStyle() {
       left: 55,
       opacity: 0,
     },
-    dislikeTag: {
-      backgroundColor: '#ecf0f1',
-      borderRadius: 5,
-      padding: '0px 20px',
-      display: 'inline-block',
-      border: '3px solid #FF6A67',
-      paddingTop: 4,
-    },
     icon: {
       width: 30,
       margin: 20,
@@ -150,7 +144,12 @@ function getStyle() {
   };
 }
 ImagesSwiper.displayName = 'ImagesSwiper';
+ImagesSwiper.propTypes = {
+  imageList: React.PropTypes.array.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
+};
 
+// Get the correct state
 function select(state) {
   return {
     imageList: state.images.imageList,

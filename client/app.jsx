@@ -1,6 +1,5 @@
 // Libs
 import 'velocity-animate';
-import 'bootstrap-webpack';
 import './style/app.styl';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
@@ -17,7 +16,7 @@ import { syncReduxAndRouter } from 'redux-simple-router';
 
 // Pages
 import NotFound from './containers/not-found.jsx';
-import Index from './containers/index.jsx';
+import Index from './containers/Index/index.jsx';
 import Liked from './containers/Liked/images-liked.jsx';
 import ImagesSwiper from './containers/Images/image-swiper.jsx';
 
@@ -30,8 +29,7 @@ const store = createStoreWithMiddleware(rootReducer);
 const history = createBrowserHistory();
 syncReduxAndRouter(history, store);
 
-
-// Main class - App
+// Global App
 let App = () => (
   <Provider store={store}>
     <Router history={history}>

@@ -5,9 +5,13 @@ let s = getStyle();
 let Index = (props) =>
   (<div>
     <div style={s.container}>
-      <div style={s.logo}><Link to='home' style={{textDecoration: 'none'}}>Timgur</Link></div>
+      <div style={s.logoContainer}><Link to='home' style={s.logo}>Timgur</Link></div>
       <div style={s.links}>
-        <div style={s.link}><Link to='liked' style={{textDecoration: 'none'}}>Liked</Link></div>
+        <div style={s.link}>
+          <Link to='liked'>
+            <img style={s.icon} src={require('./assets/like.png')} />
+          </Link>
+        </div>
       </div>
     </div>
     <div style={s.children}>{props.children}</div>
@@ -19,7 +23,7 @@ function getStyle() {
     container: {
       width: '100%',
       height: 60,
-      backgroundColor: UI.lightWhite,
+      backgroundColor: UI.lightBlue,
       display: 'flex',
       alignItems: 'center',
       position: 'fixed',
@@ -30,10 +34,13 @@ function getStyle() {
     children: {
       marginTop: 100,
     },
-    logo: {
+    logoContainer: {
       flex: 'initial',
       padding: 20,
       cursor: 'pointer',
+    },
+    logo: {
+      color: UI.white,
     },
     links: {
       flex: 1,
@@ -44,10 +51,15 @@ function getStyle() {
     link: {
       padding: 20,
       cursor: 'pointer',
-      color: 'red',
+    },
+    icon: {
+      width: 30,
     },
   };
 }
 Index.displayName = 'Index';
+Index.propTypes = {
+  children: React.PropTypes.object.isRequired,
+};
 
 export default Index;

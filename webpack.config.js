@@ -40,6 +40,7 @@ var config = {
       'node_modules/',
       'utils/',
       'components/',
+      'actions/',
     ],
   },
 };

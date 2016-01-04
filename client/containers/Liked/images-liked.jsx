@@ -46,7 +46,12 @@ function getStyle() {
   };
 }
 ImagesLiked.displayName = 'ImagesLiked';
+ImagesLiked.propTypes = {
+  imageList: React.PropTypes.array.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
+};
 
+// Get the global state
 function select(state) {
   return {
     imageList: state.images.imageList,

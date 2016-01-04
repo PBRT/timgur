@@ -1,6 +1,8 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
 
+
+// Action constants
 export const REQUEST_IMAGES = 'REQUEST_IMAGES';
 export const RECEIVE_IMAGES = 'RECEIVE_IMAGES';
 export const LIKE_IMAGE = 'LIKE_IMAGE';
@@ -33,6 +35,7 @@ function receiveImages(json) {
   };
 }
 
+// Fetch images from IMNGUR API
 function fetchImages(state) {
   return dispatch => {
     dispatch(requestImages());
@@ -53,6 +56,8 @@ function shouldFetchImages(state) {
   return (imageList.length < 45);
 }
 
+
+// Automatically check if new images needed
 export function fetchImagesIfNeeded() {
   return (dispatch, getState) => {
     if (shouldFetchImages(getState())) {

@@ -10,11 +10,17 @@ let ImagesLiked = (props) => {
   return (
     <div style={s.container}>
       <div style={s.title}>
-        Image Liked
+        Images you liked
       </div>
-      {imageList.filter((image) => image.isLiked).map((image, index) => (
-        <ImageComp key={index} image={image} />
-      ))}
+      <div style={s.imagesContainer}>
+        {imageList.filter((image) => image.isLiked).length === 0 ?
+          <div>You did not liked anything so far!</div> :
+          imageList.filter((image) => image.isLiked).map((image, index) => (
+            <div style={s.imageWrapper} key={index}>
+              <ImageComp image={image} isLast={true}/>
+            </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -24,10 +30,18 @@ function getStyle() {
   return {
     container: {
       textAlign: 'center',
+      margin: 30,
     },
     title: {
       fontSize: UI.fontXL,
       marginBottom: 20,
+    },
+    imagesContainer: {
+      margin: 'auto',
+      maxWidth: 400,
+    },
+    imageWrapper: {
+      margin: '40px 0px',
     },
   };
 }

@@ -2,7 +2,7 @@
 import { likeImage, dislikeImage } from '../../actions/images.js';
 import { connect } from 'react-redux';
 import { fetchImagesIfNeeded } from '../../actions/images.js';
-
+import ImageComp from 'image-comp.jsx';
 
 let s = getStyle();
 
@@ -54,16 +54,8 @@ class ImagesSwiper extends React.Component{
           </div>
           {imageListToDisplay.map((image, index) => {
             return (
-              <div
-                key={index}
-                style={s.subcontainer}
-                ref={`image-${image.id}`}>
-                <img
-                  style={s.img}
-                  src={image['is_album'] ? `http://i.imgur.com/${image['cover']}.jpg` : image['link'] } />
-                <div style={s.title}>
-                  {image.title.length > 80 ? image.title.substring(0, 80) + '...' : image.title}
-                </div>
+              <div style={s.imageWrapper} key={index} >
+                <ImageComp image={image} isLast={index === imageListToDisplay.length - 1}/>
               </div>
           );})}
         </div>
@@ -89,6 +81,7 @@ function getStyle() {
   return {
     container: {
       textAlign: 'center',
+      margin: 30,
     },
     title: {
       fontSize: UI.fontXL,
@@ -97,41 +90,20 @@ function getStyle() {
     stack: {
       position: 'relative',
       marginTop: 30,
-      width: 300,
-      minHeight: 370,
+      maxWidth: 300,
+      height: 370,
       margin: 'auto',
-    },
-    subcontainer: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: 3,
-      boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.1)',
-    },
-    img: {
-      width: '100%',
-      height: 300,
-      borderTopLeftRadius: 3,
-      borderTopRightRadius: 3,
-    },
-    title: {
-      borderTop: '1px solid #F0F0F0',
-      backgroundColor: 'white',
-      height: 70,
-      width: 400,
-      display: 'table-cell',
-      verticalAlign: 'middle',
-      borderBottomLeftRadius: 3,
-      borderBottomRightRadius: 3,
-      padding: 10,
     },
     like: {
       marginRight: 15,
     },
     dislike: {
       marginLeft: 15,
+    },
+    imageWrapper: {
+      top: 0,
+      left: 0,
+      position: 'absolute',
     },
     likeContainer: {
       color: '#16a085',
@@ -145,11 +117,12 @@ function getStyle() {
       opacity: 0,
     },
     likeTag: {
-      backgroundColor: 'white',
+      backgroundColor: '#ecf0f1',
       borderRadius: 5,
       padding: '0px 20px',
       display: 'inline-block',
       border: '3px solid #16a085',
+      paddingTop: 4,
     },
     dislikeContainer: {
       color: '#FF6A67',
@@ -163,11 +136,12 @@ function getStyle() {
       opacity: 0,
     },
     dislikeTag: {
-      backgroundColor: 'white',
+      backgroundColor: '#ecf0f1',
       borderRadius: 5,
       padding: '0px 20px',
       display: 'inline-block',
       border: '3px solid #FF6A67',
+      paddingTop: 4,
     },
     icon: {
       width: 30,

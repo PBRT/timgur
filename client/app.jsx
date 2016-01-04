@@ -18,7 +18,7 @@ import { syncReduxAndRouter } from 'redux-simple-router';
 // Pages
 import NotFound from './containers/not-found.jsx';
 import Index from './containers/index.jsx';
-import Likes from './containers/Likes/images-liked.jsx';
+import Liked from './containers/Liked/images-liked.jsx';
 import ImagesSwiper from './containers/Images/image-swiper.jsx';
 
 // Redux store
@@ -37,7 +37,7 @@ let App = () => (
     <Router history={history}>
       <Route path='/' component={Index}>
         <IndexRoute component={ImagesSwiper}/>
-        <Route path='/likes' component={Likes}/>
+        <Route path='/liked' component={Liked}/>
         <Route path='/home' component={ImagesSwiper}/>
       </Route>
       <Route path='*' component={NotFound}/>

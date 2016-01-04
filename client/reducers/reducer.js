@@ -21,7 +21,7 @@ function imageList(state = [], action) {
     case (DISLIKE_IMAGE):
       let newState = _.clone(state);
       const index = state.filter((image) => (image.id === action.image.id)).map((image) => state.indexOf(image));
-      newState.splice(index, 14);
+      newState.splice(index, 1);
       return newState;
     case (LIKE_IMAGE):
       return state.map((image) => {

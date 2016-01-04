@@ -20,8 +20,8 @@ function getStyle() {
       textAlign: 'center',
     },
     img: {
-      maxWidth: 200,
-      maxHeight: 400,
+      width: 200,
+      height: 300,
     },
     title: {
       fontSize: UI.fontXL,

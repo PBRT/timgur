@@ -8,7 +8,6 @@ let Index = (props) =>
       <div style={s.logo}><Link to='home'>Timgur</Link></div>
       <div style={s.links}>
         <div style={s.link}><Link to='likes'>Liked</Link></div>
-        <div style={s.link}><Link to='swiper'>Swiper</Link></div>
       </div>
     </div>
     <div style={s.children}>{props.children}</div>

@@ -16,7 +16,6 @@ import rootReducer from './reducers/reducer.js';
 import { syncReduxAndRouter } from 'redux-simple-router';
 
 // Pages
-import Home from './containers/home.jsx';
 import NotFound from './containers/not-found.jsx';
 import Index from './containers/index.jsx';
 import Likes from './containers/Likes/images-liked.jsx';
@@ -37,10 +36,9 @@ let App = () => (
   <Provider store={store}>
     <Router history={history}>
       <Route path='/' component={Index}>
-        <IndexRoute component={Home}/>
-        <Route path='/home' component={Home}/>
+        <IndexRoute component={ImagesSwiper}/>
         <Route path='/likes' component={Likes}/>
-        <Route path='/swiper' component={ImagesSwiper}/>
+        <Route path='/home' component={ImagesSwiper}/>
       </Route>
       <Route path='*' component={NotFound}/>
     </Router>

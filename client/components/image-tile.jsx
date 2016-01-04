@@ -28,6 +28,7 @@ function getStyle() {
     container: {
       width: 300,
       height: 380,
+      margin: 'auto',
       borderRadius: 3,
       boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.1)',
     },

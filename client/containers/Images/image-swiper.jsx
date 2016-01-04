@@ -1,9 +1,10 @@
 // Redux
-import { likeImage, dislikeImage } from 'images.js';
+import { likeImage, dislikeImage, updateTag, updateSort } from 'images.js';
 import { connect } from 'react-redux';
 import { fetchImagesIfNeeded } from 'images.js';
 import ImageTile from 'image-tile.jsx';
 import Spinner from 'spinner/spinner.jsx';
+import TopFilter from 'filter/top-filter.jsx';
 
 let s = getStyle();
 
@@ -36,7 +37,7 @@ class ImagesSwiper extends React.Component{
     });
   }
   render() {
-    const { imageList, isFetching } = this.props;
+    const { imageList, isFetching, tag, sort, dispatch } = this.props;
     // The array is reversed to have the correct order displayed on the stack
     const imageListToDisplay = imageList.filter((image) => !image.isLiked).filter((img, index) => index < 5).reverse();
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
@@ -48,6 +49,11 @@ class ImagesSwiper extends React.Component{
 
     return (
       <div style={s.container}>
+        <TopFilter
+          tag={tag}
+          onTagChange={(tag) => dispatch(updateTag(tag))}
+          sort={sort}
+          onSortChange={(sort) => dispatch(updateSort(sort))}/>
         <div style={s.stack}>
           <div style={s.likeContainer} ref='like'>
             <div style={likeTagStyle}>LIKED</div>
@@ -85,7 +91,7 @@ function getStyle() {
   return {
     container: {
       textAlign: 'center',
-      margin: 30,
+      margin: 10,
     },
     title: {
       fontSize: UI.fontXL,
@@ -156,6 +162,8 @@ function select(state) {
   return {
     imageList: state.images.imageList,
     isFetching: state.images.isFetching,
+    tag: state.images.tag,
+    sort: state.images.sort,
   };
 }
 

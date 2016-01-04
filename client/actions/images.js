@@ -53,7 +53,7 @@ function fetchImages(state) {
 function shouldFetchImages(state) {
   const imageList = state.images.imageList.length === 0 ? [] :
     state.images.imageList.filter((image) => !image['isLiked']).map((image) => image);
-  return (imageList.length < 45);
+  return (imageList.length < 5);
 }
 
 

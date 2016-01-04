@@ -1,6 +1,6 @@
 // Redux
 import { connect } from 'react-redux';
-import ImageComp from 'image-comp.jsx';
+import ImageTile from 'image-tile.jsx';
 
 let s = getStyle();
 
@@ -17,7 +17,7 @@ let ImagesLiked = (props) => {
           <div>You did not liked anything so far!</div> :
           imageList.filter((image) => image.isLiked).map((image, index) => (
             <div style={s.imageWrapper} key={index}>
-              <ImageComp image={image} isLast={true}/>
+              <ImageTile image={image} isLast={true}/>
             </div>
         ))}
       </div>

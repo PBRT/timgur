@@ -2,7 +2,8 @@
 import { likeImage, dislikeImage } from 'images.js';
 import { connect } from 'react-redux';
 import { fetchImagesIfNeeded } from 'images.js';
-import ImageComp from 'image-comp.jsx';
+import ImageTile from 'image-tile.jsx';
+import Spinner from 'spinner/spinner.jsx';
 
 let s = getStyle();
 
@@ -35,7 +36,7 @@ class ImagesSwiper extends React.Component{
     });
   }
   render() {
-    const { imageList } = this.props;
+    const { imageList, isFetching } = this.props;
     // The array is reversed to have the correct order displayed on the stack
     const imageListToDisplay = imageList.filter((image) => !image.isLiked).filter((img, index) => index < 5).reverse();
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
@@ -54,10 +55,11 @@ class ImagesSwiper extends React.Component{
           <div style={s.dislikeContainer} ref='dislike'>
             <div style={dislikeTagStyle}>DISLIKED</div>
           </div>
-          {imageListToDisplay.map((image, index) => {
+          { isFetching ? <Spinner /> :
+          imageListToDisplay.map((image, index) => {
             return (
               <div style={s.imageWrapper} key={index} >
-                <ImageComp image={image} isLast={index === imageListToDisplay.length - 1}/>
+                <ImageTile image={image} isLast={index === imageListToDisplay.length - 1}/>
               </div>
           );})}
         </div>
@@ -153,6 +155,7 @@ ImagesSwiper.propTypes = {
 function select(state) {
   return {
     imageList: state.images.imageList,
+    isFetching: state.images.isFetching,
   };
 }
 

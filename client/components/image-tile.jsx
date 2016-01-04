@@ -1,6 +1,6 @@
 let s = getStyle();
 
-let ImageComp = (props) => {
+let ImageTile = (props) => {
 
   const { image } = props;
   const containerStyle =
@@ -26,13 +26,14 @@ let ImageComp = (props) => {
 function getStyle() {
   return {
     container: {
-      width: '100%',
-      height: '100%',
+      width: 300,
+      height: 380,
       borderRadius: 3,
       boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.1)',
     },
     img: {
       width: '100%',
+      maxWidth: 300,
       height: 300,
       borderTopLeftRadius: 3,
       borderTopRightRadius: 3,
@@ -51,13 +52,14 @@ function getStyle() {
     },
     title: {
       flex: 1,
+      overflow: 'hidden',
     },
   };
 }
-ImageComp.displayName = 'ImageComp';
-ImageComp.propTypes = {
+ImageTile.displayName = 'ImageTile';
+ImageTile.propTypes = {
   image: React.PropTypes.object.isRequired,
   isLast: React.PropTypes.bool.isRequired,
 };
 
-export default ImageComp;
+export default ImageTile;

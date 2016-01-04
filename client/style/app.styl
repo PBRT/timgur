@@ -47,3 +47,31 @@ a:hover
 
 .image-swiper-button:hover
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2)
+
+.spinner-path
+  width: 40
+  stroke-dasharray: 1000
+  stroke-dashoffset: 1000
+  animation: dash 2.5s linear alternate infinite
+
+
+@keyframes dash
+  0% {
+    stroke-dashoffset: 1000;
+    fill: white;
+  }
+
+  5% {
+    stroke-dashoffset: 1000;
+    fill: white;
+  }
+
+  90% {
+    stroke-dashoffset: 500;
+    fill: lightBlue;
+  }
+
+  100% {
+    stroke-dashoffset: 500;
+    fill: lightBlue;
+  }

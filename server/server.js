@@ -42,7 +42,7 @@ app.get('/images', function(req, res) {
 });
 
 // Render files
-app.get('/', function (req, res) {
+app.get('/:var(home|liked)?', function (req, res) {
   res.render('index');
 });
 

@@ -2,12 +2,12 @@ let s = getStyle();
 
 let ImageTile = (props) => {
 
-  const { image } = props;
+  const { image, redirect } = props;
   const containerStyle =
     Object.assign({}, s.container, {boxShadow: props.isLast ? '0px 0px 5px 0px rgba(0,0,0,0.2)' : 'none'});
 
   return (
-    <a href={image.link} target='_blank'>
+    <a href={redirect ? image.link : '#'} target={redirect ? '_blank' : '_self'}>
       <div style={containerStyle}>
         <img
           style={s.img}
@@ -61,6 +61,7 @@ ImageTile.displayName = 'ImageTile';
 ImageTile.propTypes = {
   image: React.PropTypes.object.isRequired,
   isLast: React.PropTypes.bool.isRequired,
+  redirect: React.PropTypes.bool.isRequired,
 };
 
 export default ImageTile;

@@ -15,6 +15,7 @@ let Index = (props) =>
       </div>
     </div>
     {props.children}
+    <a style={s.githubLink} href='https://github.com/PBRT/timgur' target='_blank'>Check source code</a>
   </div>);
 
 
@@ -51,6 +52,12 @@ function getStyle() {
     },
     icon: {
       width: 30,
+    },
+    githubLink: {
+      textAlign: 'center',
+      color: UI.lightBlue,
+      margin: '-40px 0px 20px',
+      display: 'block',
     },
   };
 }

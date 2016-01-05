@@ -66,7 +66,10 @@ class ImagesSwiper extends React.Component{
           imageListToDisplay.map((image, index) => {
             return (
               <div style={s.imageWrapper} key={index} >
-                <ImageTile image={image} isLast={index === imageListToDisplay.length - 1}/>
+                <ImageTile
+                  redirect={false}
+                  image={image}
+                  isLast={index === imageListToDisplay.length - 1}/>
               </div>
           );})}
         </div>

@@ -9,6 +9,7 @@ let Dropdown = (props) => {
       <select
         value={current}
         style={{
+          cursor: 'pointer',
           fontWeight: 'bold',
           textDecoration: 'underline',
           width: `${props.current.length * 9}px`}}

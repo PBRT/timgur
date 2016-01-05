@@ -18,7 +18,7 @@ let ImagesLiked = (props) => {
           <div>You did not liked anything so far!</div> :
           imageList.filter((image) => image.isLiked).map((image, index) => (
             <div style={s.imageWrapper} key={index}>
-              <ImageTile image={image} isLast={true}/>
+              <ImageTile image={image} isLast={true} redirect={true}/>
             </div>
         ))}
       </div>

@@ -14,7 +14,7 @@ let Index = (props) =>
         </div>
       </div>
     </div>
-    <div style={s.children}>{props.children}</div>
+    {props.children}
   </div>);
 
 
@@ -30,9 +30,6 @@ function getStyle() {
       top: 0,
       zIndex: 100,
       boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.3)',
-    },
-    children: {
-      marginTop: 70,
     },
     logoContainer: {
       flex: 'initial',

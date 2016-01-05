@@ -14,6 +14,7 @@ class ImagesSwiper extends React.Component{
     this.handleAction = this.handleAction.bind(this);
   }
   componentDidMount() {
+    // this.props.dispatch(setViewport(window.innerWidth));
     this.props.dispatch(fetchImagesIfNeeded());
     $(this.refs.like).velocity({rotateZ: '-35deg'});
     $(this.refs.dislike).velocity({rotateZ: '35deg'});
@@ -37,7 +38,7 @@ class ImagesSwiper extends React.Component{
     });
   }
   render() {
-    const { imageList, isFetching, tag, sort, dispatch } = this.props;
+    const { imageList, isFetching, tag, sort, dispatch, isMobile } = this.props;
     // The array is reversed to have the correct order displayed on the stack
     const imageListToDisplay = imageList.filter((image) => !image.isLiked).filter((img, index) => index < 5).reverse();
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
@@ -45,10 +46,10 @@ class ImagesSwiper extends React.Component{
     // Styles
     const likeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightGreen});
     const dislikeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightRed});
-
+    const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '70px 30px' : '70px'});
 
     return (
-      <div style={s.container}>
+      <div style={containerStyle}>
         <TopFilter
           tag={tag}
           onTagChange={(tag) => dispatch(updateTag(tag))}
@@ -91,7 +92,7 @@ function getStyle() {
   return {
     container: {
       textAlign: 'center',
-      margin: 10,
+      margin: 70,
     },
     title: {
       fontSize: UI.fontXL,
@@ -101,7 +102,7 @@ function getStyle() {
       position: 'relative',
       marginTop: 30,
       maxWidth: 300,
-      height: 370,
+      height: 350,
       margin: 'auto',
     },
     like: {
@@ -164,6 +165,7 @@ function select(state) {
     isFetching: state.images.isFetching,
     tag: state.images.tag,
     sort: state.images.sort,
+    isMobile: state.viewport.isMobile,
   };
 }
 

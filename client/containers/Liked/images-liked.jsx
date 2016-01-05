@@ -5,10 +5,11 @@ import ImageTile from 'image-tile.jsx';
 let s = getStyle();
 
 let ImagesLiked = (props) => {
-  const { imageList } = props;
+  const { imageList, isMobile} = props;
+  const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '100px 30px' : '100px'});
 
   return (
-    <div style={s.container}>
+    <div style={containerStyle}>
       <div style={s.title}>
         Images you liked
       </div>
@@ -30,7 +31,7 @@ function getStyle() {
   return {
     container: {
       textAlign: 'center',
-      margin: 30,
+      margin: 100,
     },
     title: {
       fontSize: UI.fontXL,
@@ -55,6 +56,7 @@ ImagesLiked.propTypes = {
 function select(state) {
   return {
     imageList: state.images.imageList,
+    isMobile: state.viewport.isMobile,
   };
 }
 

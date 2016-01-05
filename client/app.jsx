@@ -19,28 +19,37 @@ import NotFound from './containers/not-found.jsx';
 import Index from './containers/Index/index.jsx';
 import Liked from './containers/Liked/images-liked.jsx';
 import ImagesSwiper from './containers/Images/image-swiper.jsx';
-
+import { setViewport } from 'viewport.js';
 // Redux store
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
+
 
 // Routing
 const history = createBrowserHistory();
 syncReduxAndRouter(history, store);
 
 // Global App
-let App = () => (
-  <Provider store={store}>
-    <Router history={history}>
-      <Route path='/' component={Index}>
-        <IndexRoute component={ImagesSwiper}/>
-        <Route path='/liked' component={Liked}/>
-        <Route path='/home' component={ImagesSwiper}/>
-      </Route>
-      <Route path='*' component={NotFound}/>
-    </Router>
-  </Provider>
-);
+class App extends React.Component{
+  componentDidMount() {
+    store.dispatch(setViewport(window.innerWidth));
+    window.addEventListener('resize', () =>  store.dispatch(setViewport(window.innerWidth)));
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path='/' component={Index}>
+            <IndexRoute component={ImagesSwiper}/>
+            <Route path='/liked' component={Liked}/>
+            <Route path='/home' component={ImagesSwiper}/>
+          </Route>
+          <Route path='*' component={NotFound}/>
+        </Router>
+      </Provider>
+    );
+  }
+}
 
 ReactDOM.render(<App/>, document.getElementById('app'));

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { routeReducer } from 'redux-simple-router';
 import { REQUEST_IMAGES, RECEIVE_IMAGES, LIKE_IMAGE, DISLIKE_IMAGE, RESET_IMAGES, SET_TAG, SET_SORT } from 'images.js';
+import { SET_VIEWPORT } from 'viewport.js';
 
 // Handle the image object state
 function imageItem(state = {}, action) {
@@ -96,9 +97,19 @@ function images(state = {
   }
 };
 
+// viewport handler
+function viewport(state = {isMobile: false, isDesktop: true}, action) {
+  switch(action.type) {
+    case (SET_VIEWPORT):
+      return Object.assign({}, {isMobile: action.width < 768, isDesktop: action.width >= 768});
+    default: return state;
+  }
+};
+
 const todoApp = combineReducers({
   routing: routeReducer,
   images: images,
+  viewport: viewport
 });
 
 export default todoApp;

@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import RouteTransition from 'route-transition.jsx';
 
 let s = getStyle();
 
@@ -14,8 +15,9 @@ let Index = (props) =>
         </div>
       </div>
     </div>
-    {props.children}
-    <a style={s.githubLink} href='https://github.com/PBRT/timgur' target='_blank'>Check source code</a>
+    <RouteTransition pathname={props.location.pathname}>
+      {props.children}
+    </RouteTransition>
   </div>);
 
 
@@ -52,12 +54,6 @@ function getStyle() {
     },
     icon: {
       width: 30,
-    },
-    githubLink: {
-      textAlign: 'center',
-      color: UI.lightBlue,
-      margin: '-40px 0px 20px',
-      display: 'block',
     },
   };
 }

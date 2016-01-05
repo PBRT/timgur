@@ -24,6 +24,6 @@ And go to `http://localhost:3000`in your favourite browser. It will start the ``
 
 ## External Libs
 
-I used Stylus and Stylus export loader as a CSS preprocessor. It enable me to have a common JS/CSS UI Kit. I used react router for handling the two differents road with [Redux Simple Router](https://github.com/rackt/redux-simple-router). VelocityJS is here for providing the best animation API ever.
+I used Stylus and Stylus export loader as a CSS preprocessor. It enable me to have a common JS/CSS UI Kit. I used react router for handling the two differents road with [Redux Simple Router](https://github.com/rackt/redux-simple-router). VelocityJS is here for providing the best animation API ever. React motion is used simply for handling the route transition.
 
 

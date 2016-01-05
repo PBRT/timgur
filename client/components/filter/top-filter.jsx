@@ -9,7 +9,7 @@ let TopFilter = (props) => {
 
   return (
     <div style={s.container}>
-      Current tag is&nbsp;
+      Show me&nbsp;
       <Dropdown list={tagList} current={tag} onChange={(tag) => onTagChange(tag)}/>
       &nbsp;sorted by&nbsp;
       <Dropdown list={sortList} current={sort} onChange={(sort) => onSortChange(sort)}/>
@@ -23,6 +23,9 @@ function getStyle() {
       padding: '20px 0px',
       margin: '10px 0px',
       width: '100%',
+      color: UI.lightBlue,
+      fontWeight: 'bold',
+      fontSize: 18,
     },
   };
 };

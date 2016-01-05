@@ -9,17 +9,14 @@ let Dropdown = (props) => {
       <select
         value={current}
         style={{
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          textDecoration: 'underline',
-          width: `${props.current.length * 9}px`}}
+          color: 'white',}}
         onChange={(e) => onChange(e.target.value)}>
         {list.map((item, index) => (
           <option key={index} style={s.item}>
             {item}
           </option>
         ))}
-      </select>
+      </select><span style={s.arrow}>&#x25BC;</span>
     </div>
   );
 };
@@ -29,6 +26,12 @@ function getStyle() {
     container: {
       display: 'inline-block',
       position: 'relative',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      padding: '7px',
+      color: UI.white,
+      backgroundColor: UI.lightBlue,
+      borderRadius: 5,
     },
     list: {
       position: 'absolute',
@@ -39,6 +42,10 @@ function getStyle() {
     item: {
       padding: 10,
       borderBottom: '1px solid',
+    },
+    arrow: {
+      fontSize: UI.fontSM,
+      marginLeft: 5,
     },
   };
 };

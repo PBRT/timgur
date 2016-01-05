@@ -1,4 +1,5 @@
 var path = require('path');
+var request = require('request');
 var express = require('express');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
@@ -23,16 +24,26 @@ app.use(favicon(path.join(__dirname, 'fav.ico')));
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
+app.get('/images', function(req, res) {
+  const url ='https://api.imgur.com/3/gallery/t/' +
+    req.param('tag') + '/' +
+    req.param('sort') + '/' +
+    req.param('pagination') + '.json';
 
-// Render files
-app.get('*', function (req, res) {
-  res.render('index', {reactContent: ''});
+  const options = {url: url, headers: {'Authorization': process.env.IMGUR_KEY}};
+
+  request(options, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      res.send(JSON.parse(body));
+    } else {
+      res.send({error: error});
+    }
+  });
 });
 
-
-// Mail endpoint
-app.post('/endpoint', function(req, res) {
-  res.send({body: 'Test endpoint'});
+// Render files
+app.get('/', function (req, res) {
+  res.render('index');
 });
 
 // Launch app

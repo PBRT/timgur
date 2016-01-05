@@ -1,7 +1,6 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
 
-
 // Action constants
 export const REQUEST_IMAGES = 'REQUEST_IMAGES';
 export const RECEIVE_IMAGES = 'RECEIVE_IMAGES';
@@ -89,8 +88,8 @@ function fetchImages(state) {
     const tag = state.images.tag;
     const sort = state.images.sort;
 
-    return fetch(`https://api.imgur.com/3/gallery/t/${tag}/${sort}/${pagination}.json`,
-      {method: 'GET',headers: {'Authorization': 'Client-ID 6755073f1310a88'}})
+    return fetch(`/images?tag=${tag}&sort=${sort}&pagination=${pagination}.json`,
+      {method: 'GET'})
       .then(response => response.json())
       .then(json => filterFetchedImages(json, state))
       .then(json => dispatch(receiveImages(json)));

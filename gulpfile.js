@@ -45,26 +45,13 @@ gulp.task('clean', function() {
   return del(['dist/**']);
 });
 
-// Delete auto generate bootstrap file
-gulp.task('clean:bootstrap', function() {
-  return del(['node_modules/bootstrap-webpack/bootstrap.config.js']);
-});
-// Copy bootstrap file
-gulp.task('copy:bootstrap', ['clean:bootstrap'], function() {
-  gulp.src([
-    'bootstrap.config.js',
-  ]).pipe(gulp.dest('node_modules/bootstrap-webpack/'));
-});
-
 gulp.task('build', [
-  'copy:bootstrap',
   'copy:server',
   'copy:package-json',
   'webpack:production',
 ]);
 
 gulp.task('build:development', [
-  'copy:bootstrap',
   'copy:server',
   'copy:package-json',
   'webpack:production',

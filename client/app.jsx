@@ -25,7 +25,6 @@ const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
 
-
 // Routing
 const history = createBrowserHistory();
 syncReduxAndRouter(history, store);

@@ -14,7 +14,6 @@ class ImagesSwiper extends React.Component{
     this.handleAction = this.handleAction.bind(this);
   }
   componentDidMount() {
-    // this.props.dispatch(setViewport(window.innerWidth));
     this.props.dispatch(fetchImagesIfNeeded());
     $(this.refs.like).velocity({rotateZ: '-35deg'});
     $(this.refs.dislike).velocity({rotateZ: '35deg'});
@@ -27,15 +26,30 @@ class ImagesSwiper extends React.Component{
   }
   // Handle animation and dispatch actions
   handleAction(image, type) {
-    $(this.refs[type]).velocity('stop');
-    $(this.refs[type]).velocity({opacity: 1}, {
-      duration: 300,
-      complete: function() {
-        if (type === 'like') { this.props.dispatch(likeImage(image));}
-        else if (type === 'dislike') { this.props.dispatch(dislikeImage(image)); }
-        $(this.refs[type]).velocity({opacity: 0}, 0);
-      }.bind(this)
-    });
+
+    const animation = {
+      like: { banner: '-35deg', translateX: ['-10%', '-100%'], rotate: ['-5deg', '60deg']},
+      dislike: { banner: '35deg', translateX: ['10%', '100%'], rotate: ['5deg', '-60deg']}
+    };
+
+    // Animate like/dislike banner
+    $(this.refs[type + '-' + image.id])
+      .velocity({opacity: 1, rotateZ: animation[type].banner}, {duration: 0, queue: false});
+
+    // Animate card
+    $(this.refs['image-' + image.id]).velocity(
+      {translateX: animation[type].translateX[0], rotateZ: animation[type].rotate[0]}, {
+        duration: 100,
+        complete: function() {
+          $(this.refs['image-' + image.id]).velocity(
+            {opacity: 0, translateX: animation[type].translateX[1], rotateZ: animation[type].rotate[1]}, {
+              duration: 300,
+              complete: function() {
+                if (type === 'like') { this.props.dispatch(likeImage(image));}
+                else if (type === 'dislike') { this.props.dispatch(dislikeImage(image)); }
+              }.bind(this)});
+        }.bind(this)
+      });
   }
   render() {
     const { imageList, isFetching, tag, sort, dispatch, isMobile } = this.props;
@@ -56,20 +70,16 @@ class ImagesSwiper extends React.Component{
           sort={sort}
           onSortChange={(sort) => dispatch(updateSort(sort))}/>
         <div style={s.stack}>
-          <div style={s.likeContainer} ref='like'>
-            <div style={likeTagStyle}>LIKED</div>
-          </div>
-          <div style={s.dislikeContainer} ref='dislike'>
-            <div style={dislikeTagStyle}>DISLIKED</div>
-          </div>
           { isFetching ? <Spinner /> :
           imageListToDisplay.map((image, index) => {
-            const scaleVal = index / 10 + 0.8;
-            const imageWrapperStyle = Object.assign({}, s.imageWrapper, {
-              transform: `translate3d(0px, ${-(index - 2) * 32}px, 0px) scale(${scaleVal})`,
-            });
             return (
-              <div style={imageWrapperStyle} key={index} >
+              <div style={s.imageWrapper} key={image.id} ref={`image-${image.id}`}>
+                <div style={s.likeContainer} ref={`like-${image.id}`}>
+                  <div style={likeTagStyle}>LIKED</div>
+                </div>
+                <div style={s.dislikeContainer} ref={`dislike-${image.id}`}>
+                  <div style={dislikeTagStyle}>DISLIKED</div>
+                </div>
                 <ImageTile
                   redirect={false}
                   image={image}

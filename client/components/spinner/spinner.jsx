@@ -2,7 +2,7 @@ import { path } from './path.js';
 
 let Spinner = () => {
   return (
-    <div style={{textAlign: 'center', margin: '60px 0px'}}>
+    <div style={{textAlign: 'center', padding: '130px 0px'}}>
       <svg width='100' height='95' viewBox='0 0 100 90'>
         <path
           transform='translate(5,2.5)'

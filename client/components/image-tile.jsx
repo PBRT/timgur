@@ -4,9 +4,17 @@ let ImageTile = (props) => {
 
   const { image, redirect } = props;
 
+  const Wrapper = (props) => redirect ?
+    (<a href={image.link} target={'_blank'}>{props.children}</a>) :
+    (<div>{props.children}</div>);
+
+  const containerStyle = Object.assign({}, s.container,
+    {boxShadow: props.isLast ? '0px 0px 4px 0px rgba(0,0,0,0.15)' : 'none'});
+
   return (
-    <a href={redirect ? image.link : '#'} target={redirect ? '_blank' : '_self'}>
-      <div style={s.container}>
+    <Wrapper>
+      <div style={containerStyle}>
+        <div style={s.overlay}></div>
         <img
           style={s.img}
           src={image['is_album'] ? `http://i.imgur.com/${image['cover']}.jpg` : image['link'] } />
@@ -16,7 +24,7 @@ let ImageTile = (props) => {
           </div>
         </div>
       </div>
-    </a>
+    </Wrapper>
   );
 };
 
@@ -25,10 +33,18 @@ function getStyle() {
   return {
     container: {
       maxWidth: 300,
+      width: 300,
       height: 341,
       margin: 'auto',
+      position: 'relative',
       borderRadius: 3,
-      boxShadow: '0px 0px 7px 0px rgba(0,0,0,0.2)',
+    },
+    overlay: {
+      height: 280,
+      width: 300,
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
     img: {
       width: '100%',

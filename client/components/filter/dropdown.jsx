@@ -8,14 +8,14 @@ let Dropdown = (props) => {
     <div style={s.container}>
       <select
         value={current}
-        style={{color: 'white'}}
+        style={s.select}
         onChange={(e) => onChange(e.target.value)}>
         {list.map((item, index) => (
           <option key={index} style={s.item}>
             {item}
           </option>
         ))}
-      </select><span style={s.arrow}>&#x25BC;</span>
+      </select>
     </div>
   );
 };
@@ -25,12 +25,20 @@ function getStyle() {
     container: {
       display: 'inline-block',
       position: 'relative',
-      cursor: 'pointer',
       fontWeight: 'bold',
-      padding: '7px',
       color: UI.white,
       backgroundColor: UI.lightBlue,
       borderRadius: 5,
+    },
+    select: {
+      color: UI.white,
+      backgroundImage: `url(${require('./assets/arrow.png')})`,
+      backgroundSize: '10px 12px',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 52,
+      width: 70,
+      padding: '7px 0px 7px 10px',
+      cursor: 'pointer',
     },
     list: {
       position: 'absolute',

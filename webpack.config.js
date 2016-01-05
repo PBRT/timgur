@@ -41,6 +41,7 @@ var config = {
       'utils/',
       'components/',
       'actions/',
+      'globals/',
     ],
   },
 };

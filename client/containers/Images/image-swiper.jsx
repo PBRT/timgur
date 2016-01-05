@@ -5,18 +5,51 @@ import { fetchImagesIfNeeded } from 'images.js';
 import ImageTile from 'image-tile.jsx';
 import Spinner from 'spinner/spinner.jsx';
 import TopFilter from 'filter/top-filter.jsx';
+import { stackDesktop, stackMobile } from 'constant.js';
+const Swing = require('swing');
 
+let stack;
 let s = getStyle();
 
 class ImagesSwiper extends React.Component{
   constructor(props) {
     super(props);
-    this.handleAction = this.handleAction.bind(this);
+    this.attachCardListener = this.attachCardListener.bind(this);
+    this.getImageListDisplayed = this.getImageListDisplayed.bind(this);
+    this.handleThrowOut = this.handleThrowOut.bind(this);
+  }
+  handleThrowOut(image, type) {
+    $(this.refs[`image-${image.id}`]).velocity('fadeOut', {
+      duration: 400,
+      complete: function() {
+        stack.getCard(this.refs[`image-${image.id}`]).destroy();
+        if (type === 'like') {
+          this.props.dispatch(likeImage(image));
+        } else if (type === 'dislike') {
+          this.props.dispatch(dislikeImage(image));
+        }
+      }.bind(this)
+    });
   }
   componentDidMount() {
+    stack = Swing.Stack(this.props.isMobile ? stackMobile : stackDesktop);
     this.props.dispatch(fetchImagesIfNeeded());
-    $(this.refs.like).velocity({rotateZ: '-35deg'});
-    $(this.refs.dislike).velocity({rotateZ: '35deg'});
+
+    this.attachCardListener();
+
+    // When image is dropped
+    stack.on('throwoutleft', () => {
+      const list = this.getImageListDisplayed(this.props);
+      const image = list[list.length -1];
+      this.handleThrowOut(image, 'like');
+    });
+
+    stack.on('throwoutright', () => {
+      const list = this.getImageListDisplayed(this.props);
+      const image = list[list.length -1];
+      this.handleThrowOut(image, 'dislike');
+    });
+
   }
   // Check if need to fetch other images
   componentWillReceiveProps(nextProps) {
@@ -24,42 +57,40 @@ class ImagesSwiper extends React.Component{
       this.props.dispatch(fetchImagesIfNeeded());
     }
   }
-  // Handle animation and dispatch actions
-  handleAction(image, type) {
-
-    const animation = {
-      like: { banner: '-35deg', translateX: ['-10%', '-100%'], rotate: ['-5deg', '60deg']},
-      dislike: { banner: '35deg', translateX: ['10%', '100%'], rotate: ['5deg', '-60deg']}
-    };
-
-    // Animate like/dislike banner
-    $(this.refs[type + '-' + image.id])
-      .velocity({opacity: 1, rotateZ: animation[type].banner}, {duration: 0, queue: false});
-
-    // Animate card
-    $(this.refs['image-' + image.id]).velocity(
-      {translateX: animation[type].translateX[0], rotateZ: animation[type].rotate[0]}, {
-        duration: 100,
-        complete: function() {
-          $(this.refs['image-' + image.id]).velocity(
-            {opacity: 0, translateX: animation[type].translateX[1], rotateZ: animation[type].rotate[1]}, {
-              duration: 300,
-              complete: function() {
-                if (type === 'like') { this.props.dispatch(likeImage(image));}
-                else if (type === 'dislike') { this.props.dispatch(dislikeImage(image)); }
-              }.bind(this)});
-        }.bind(this)
-      });
+  getImageListDisplayed(tab) {
+    return [...tab.imageList.filter((image) => !image.isLiked).filter((img, index) => index < 3)].reverse();
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.imageList !== this.props.imageList) {
+      this.attachCardListener();
+    }
+  }
+  attachCardListener() {
+    const list = this.getImageListDisplayed(this.props);
+    if (list.length === 3) {
+      const image = this.getImageListDisplayed(this.props)[list.length - 1];
+      stack.createCard(this.refs[`image-${image.id}`]);
+    }
+  }
+  throwOutCard(image, type) {
+    if (type === 'like') {
+      stack.getCard(this.refs[`image-${image.id}`]).throwOut(-50, -20);
+    } else if (type === 'dislike') {
+      stack.getCard(this.refs[`image-${image.id}`]).throwOut(50, -20);
+    }
+  }
+
   render() {
     const { imageList, isFetching, tag, sort, dispatch, isMobile } = this.props;
+
     // The array is reversed to have the correct order displayed on the stack
-    const imageListToDisplay = imageList.filter((image) => !image.isLiked).filter((img, index) => index < 3).reverse();
+    const imageListToDisplay = imageList
+      .filter((image) => !image.isLiked)
+      .filter((img, index) => index < 3)
+      .reverse();
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
 
     // Styles
-    const likeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightGreen});
-    const dislikeTagStyle = Object.assign({}, s.tag, {borderColor: UI.lightRed});
     const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '70px 30px' : '70px'});
 
     return (
@@ -74,12 +105,6 @@ class ImagesSwiper extends React.Component{
           imageListToDisplay.map((image, index) => {
             return (
               <div style={s.imageWrapper} key={image.id} ref={`image-${image.id}`}>
-                <div style={s.likeContainer} ref={`like-${image.id}`}>
-                  <div style={likeTagStyle}>LIKED</div>
-                </div>
-                <div style={s.dislikeContainer} ref={`dislike-${image.id}`}>
-                  <div style={dislikeTagStyle}>DISLIKED</div>
-                </div>
                 <ImageTile
                   redirect={false}
                   image={image}
@@ -90,13 +115,13 @@ class ImagesSwiper extends React.Component{
         <div
           style={s.like}
           className='image-swiper-button'
-          onClick={() => this.handleAction(imageDisplayed, 'like')}>
+          onClick={() => this.throwOutCard(imageDisplayed, 'like')}>
             <img src={require('./assets/like.png')} style={s.icon}/>
           </div>
         <div
           style={s.dislike}
           className='image-swiper-button'
-          onClick={() => this.handleAction(imageDisplayed, 'dislike')}>
+          onClick={() => this.throwOutCard(imageDisplayed, 'dislike')}>
           <img src={require('./assets/cross.png')} style={s.icon}/>
         </div>
         <a style={s.githubLink} href='https://github.com/PBRT/timgur' target='_blank'>Check source code</a>
@@ -104,7 +129,6 @@ class ImagesSwiper extends React.Component{
     );
   }
 };
-
 
 function getStyle() {
   return {
@@ -135,6 +159,7 @@ function getStyle() {
       position: 'absolute',
       border: '1px solid #f0f0f0',
       borderRadius: 5,
+      cursor: 'pointer',
     },
     tag: {
       backgroundColor: UI.lightWhite,
@@ -192,6 +217,7 @@ function select(state) {
     tag: state.images.tag,
     sort: state.images.sort,
     isMobile: state.viewport.isMobile,
+    routing: state.routing,
   };
 }
 

@@ -28,11 +28,11 @@ const store = createStoreWithMiddleware(rootReducer);
 // Routing
 const history = createBrowserHistory();
 syncReduxAndRouter(history, store);
+store.dispatch(setViewport(window.innerWidth));
 
 // Global App
 class App extends React.Component{
   componentDidMount() {
-    store.dispatch(setViewport(window.innerWidth));
     window.addEventListener('resize', () =>  store.dispatch(setViewport(window.innerWidth)));
   }
   render() {

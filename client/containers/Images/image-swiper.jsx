@@ -162,7 +162,7 @@ function getStyle() {
     },
     githubLink: {
       textAlign: 'center',
-      color: UI.lightBlue,
+      color: UI.lightGrey,
       margin: '40px 0px 20px',
       display: 'block',
     },

@@ -3,12 +3,10 @@ let s = getStyle();
 let ImageTile = (props) => {
 
   const { image, redirect } = props;
-  const containerStyle =
-    Object.assign({}, s.container, {boxShadow: props.isLast ? '0px 0px 5px 0px rgba(0,0,0,0.2)' : 'none'});
 
   return (
     <a href={redirect ? image.link : '#'} target={redirect ? '_blank' : '_self'}>
-      <div style={containerStyle}>
+      <div style={s.container}>
         <img
           style={s.img}
           src={image['is_album'] ? `http://i.imgur.com/${image['cover']}.jpg` : image['link'] } />
@@ -30,7 +28,7 @@ function getStyle() {
       height: 341,
       margin: 'auto',
       borderRadius: 3,
-      boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.1)',
+      boxShadow: '0px 0px 7px 0px rgba(0,0,0,0.2)',
     },
     img: {
       width: '100%',

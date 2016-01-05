@@ -6,13 +6,17 @@ let s = getStyle();
 let Index = (props) =>
   (<div>
     <div style={s.container}>
-      <div style={s.logoContainer}><Link to='home' style={s.logo}>Timgur</Link></div>
+      <div style={s.logoContainer}>
+        <Link to='home' style={s.logo}>
+          <div style={s.link}>Timgur</div>
+        </Link>
+      </div>
       <div style={s.links}>
-        <div style={s.link}>
           <Link to='liked'>
-            <img style={s.icon} src={require('./assets/like.png')} />
+            <div style={s.link}>
+              <img style={s.icon} src={require('./assets/like.png')} />
+            </div>
           </Link>
-        </div>
       </div>
     </div>
     <RouteTransition pathname={props.location.pathname}>
@@ -36,8 +40,6 @@ function getStyle() {
     },
     logoContainer: {
       flex: 'initial',
-      padding: 20,
-      cursor: 'pointer',
     },
     logo: {
       color: UI.white,

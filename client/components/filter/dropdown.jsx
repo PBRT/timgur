@@ -8,8 +8,7 @@ let Dropdown = (props) => {
     <div style={s.container}>
       <select
         value={current}
-        style={{
-          color: 'white',}}
+        style={{color: 'white'}}
         onChange={(e) => onChange(e.target.value)}>
         {list.map((item, index) => (
           <option key={index} style={s.item}>
@@ -44,7 +43,7 @@ function getStyle() {
       borderBottom: '1px solid',
     },
     arrow: {
-      fontSize: UI.fontSM,
+      fontSize: 8,
       marginLeft: 5,
     },
   };

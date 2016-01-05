@@ -1,7 +1,7 @@
 import Dropdown from './dropdown.jsx';
 
 let s = getStyle();
-const tagList = ['cats', 'dogs'];
+const tagList = ['cats', 'dogs', 'yolo'];
 const sortList = ['viral', 'time', 'top'];
 
 let TopFilter = (props) => {

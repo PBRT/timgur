@@ -13,5 +13,6 @@ module.exports = {
 	"lightDark": "#2c3e50",
 	"lightGreen": "#16a085",
 	"lightRed": "#FF6A67",
-	"lightBlue": "#3498db"
+	"lightBlue": "#3498db",
+	"lightGrey": "#95a5a6"
 };

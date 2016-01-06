@@ -25,7 +25,7 @@ function getStyle() {
       width: '100%',
       color: UI.lightBlue,
       fontWeight: 'bold',
-      fontSize: 18,
+      fontSize: 16,
     },
   };
 };

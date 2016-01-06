@@ -3,6 +3,7 @@ let s = getStyle();
 let Dropdown = (props) => {
 
   const { onChange, list, current } = props;
+  console.log(current);
 
   return (
     <div style={s.container}>
@@ -33,11 +34,11 @@ function getStyle() {
     select: {
       color: UI.white,
       backgroundImage: `url(${require('./assets/arrow.png')})`,
-      backgroundSize: '10px 12px',
+      backgroundSize: '8px 10px',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 52,
-      width: 70,
-      padding: '7px 0px 7px 10px',
+      backgroundPosition: 45,
+      width: 60,
+      padding: '7px 0px 7px 5px',
       cursor: 'pointer',
     },
     list: {

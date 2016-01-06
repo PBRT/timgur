@@ -91,7 +91,7 @@ class ImagesSwiper extends React.Component{
     const imageDisplayed = imageListToDisplay[imageListToDisplay.length - 1];
 
     // Styles
-    const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '70px 30px' : '70px'});
+    const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '70px 20px' : '70px'});
 
     return (
       <div style={containerStyle}>

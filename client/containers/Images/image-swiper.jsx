@@ -37,17 +37,50 @@ class ImagesSwiper extends React.Component{
 
     this.attachCardListener();
 
-    // When image is dropped
-    stack.on('throwoutleft', () => {
+    stack.on('dragmove', (e) => {
+
       const list = this.getImageListDisplayed(this.props);
       const image = list[list.length -1];
-      this.handleThrowOut(image, 'like');
+      if (e.throwOutConfidence > 0) {
+        if (e.throwDirection === 1) {
+          $(this.refs[`dislike-${image.id}`]).css('opacity', 0);
+          $(this.refs[`like-${image.id}`]).css('opacity', 1);
+        } else if (e.throwDirection === -1) {
+          $(this.refs[`dislike-${image.id}`]).css('opacity', 1);
+          $(this.refs[`like-${image.id}`]).css('opacity', 0);
+        }
+      }
     });
 
+    stack.on('dragend', () => {
+      const list = this.getImageListDisplayed(this.props);
+      const image = list[list.length -1];
+      $(this.refs[`dislike-${image.id}`]).css('opacity', 0);
+      $(this.refs[`like-${image.id}`]).css('opacity', 0);
+    });
+
+    // When image is dropped - LIKED
     stack.on('throwoutright', () => {
       const list = this.getImageListDisplayed(this.props);
       const image = list[list.length -1];
+      $(this.refs[`like-${image.id}`]).css('opacity', 1);
+      this.handleThrowOut(image, 'like');
+    });
+
+    // When image is dropped - DISLIKED
+    stack.on('throwoutleft', () => {
+      const list = this.getImageListDisplayed(this.props);
+      const image = list[list.length -1];
+      $(this.refs[`dislike-${image.id}`]).css('opacity', 1);
       this.handleThrowOut(image, 'dislike');
+    });
+
+    // When image is dropped - DISLIKED
+    stack.on('throwoutend', () => {
+      const list = this.getImageListDisplayed(this.props);
+      const image = list[list.length -1];
+      $(this.refs[`dislike-${image.id}`]).css('opacity', 0);
+      $(this.refs[`like-${image.id}`]).css('opacity', 0);
     });
 
   }
@@ -74,9 +107,9 @@ class ImagesSwiper extends React.Component{
   }
   throwOutCard(image, type) {
     if (type === 'like') {
-      stack.getCard(this.refs[`image-${image.id}`]).throwOut(-50, -20);
-    } else if (type === 'dislike') {
       stack.getCard(this.refs[`image-${image.id}`]).throwOut(50, -20);
+    } else if (type === 'dislike') {
+      stack.getCard(this.refs[`image-${image.id}`]).throwOut(-50, -20);
     }
   }
 
@@ -92,6 +125,8 @@ class ImagesSwiper extends React.Component{
 
     // Styles
     const containerStyle = Object.assign({}, s.container, {margin: isMobile ? '70px 20px' : '70px'});
+    const likeTag = Object.assign({}, s.tag, s.likeContainer);
+    const dislikeTag = Object.assign({}, s.tag, s.dislikeContainer);
 
     return (
       <div style={containerStyle}>
@@ -105,6 +140,8 @@ class ImagesSwiper extends React.Component{
           imageListToDisplay.map((image, index) => {
             return (
               <div style={s.imageWrapper} key={image.id} ref={`image-${image.id}`}>
+                <div style={likeTag} ref={`like-${image.id}`}><div style={s.like}>LIKE</div></div>
+                <div style={dislikeTag} ref={`dislike-${image.id}`}><div style={s.dislike}>DISLIKE</div></div>
                 <ImageTile
                   redirect={false}
                   image={image}
@@ -113,17 +150,17 @@ class ImagesSwiper extends React.Component{
           );})}
         </div>
         <div
-          style={s.like}
-          className='image-swiper-button'
-          onClick={() => this.throwOutCard(imageDisplayed, 'like')}>
-            <img src={require('./assets/like.png')} style={s.icon}/>
-          </div>
-        <div
-          style={s.dislike}
+          style={s.dislikeButton}
           className='image-swiper-button'
           onClick={() => this.throwOutCard(imageDisplayed, 'dislike')}>
           <img src={require('./assets/cross.png')} style={s.icon}/>
         </div>
+        <div
+          style={s.likeButton}
+          className='image-swiper-button'
+          onClick={() => this.throwOutCard(imageDisplayed, 'like')}>
+            <img src={require('./assets/like.png')} style={s.icon}/>
+          </div>
         <a style={s.githubLink} href='https://github.com/PBRT/timgur' target='_blank'>Check source code</a>
       </div>
     );
@@ -147,11 +184,17 @@ function getStyle() {
       height: 350,
       margin: 'auto',
     },
+    likeButton: {
+      marginLeft: 15,
+    },
+    dislikeButton: {
+      marginLeft: 15,
+    },
     like: {
-      marginRight: 15,
+      pointerEvents: 'none',
     },
     dislike: {
-      marginLeft: 15,
+      pointerEvents: 'none',
     },
     imageWrapper: {
       bottom: 0,
@@ -162,34 +205,35 @@ function getStyle() {
       cursor: 'pointer',
     },
     tag: {
-      backgroundColor: UI.lightWhite,
+      backgroundColor: UI.white,
       borderRadius: 5,
-      padding: '0px 20px',
+      padding: '10px',
       display: 'inline-block',
       border: '3px solid',
-      paddingTop: 4,
     },
     likeContainer: {
       color: UI.lightGreen,
       fontSize: 30,
       position: 'absolute',
-      marginTop: 50,
-      width: '100%',
+      top: 55,
       textAlign: 'center',
       zIndex: 10,
-      left: -50,
+      left: 20,
       opacity: 0,
+      pointerEvents: 'none',
+      WebkitTransform: 'rotate(-35deg)',
     },
     dislikeContainer: {
       color: UI.lightRed,
       fontSize: 30,
       position: 'absolute',
-      marginTop: 65,
-      width: '100%',
+      top: 55,
       textAlign: 'center',
       zIndex: 10,
-      left: 50,
+      right: 20,
       opacity: 0,
+      pointerEvents: 'none',
+      WebkitTransform: 'rotate(35deg)',
     },
     icon: {
       width: 30,

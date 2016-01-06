@@ -3,7 +3,6 @@ let s = getStyle();
 let Dropdown = (props) => {
 
   const { onChange, list, current } = props;
-  console.log(current);
 
   return (
     <div style={s.container}>

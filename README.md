@@ -10,7 +10,7 @@ Based on my own kickstarter [ReacToGo](https://github.com/PBRT/reactogo) using
   * [React Router](https://github.com/rackt/react-router)
   * [VelocityJS](http://julian.com/research/velocity/)
   * [Redux](http://redux.js.org/)
-
+  * [SwingJS](https://github.com/gajus/swing)
 
 ## Installation
 
@@ -26,7 +26,7 @@ And go to [localhost:3000](http://localhost:3000) in your favourite browser. It 
 
 A lot of externals librairies are used in this project for differents goals:
 
-1. UI : [VelocityJS](http://julian.com/research/velocity/) for handling the logic business animations, [React-Motion](https://github.com/chenglou/react-motion) for handling the Page transition animation. I initially wanted to use it for animating the swiping between cards as well.
+1. UI : [VelocityJS](http://julian.com/research/velocity/) for handling the logic business animations, [React-Motion](https://github.com/chenglou/react-motion) for handling the Page transition animation. I initially wanted to use it for animating the swiping between cards as well but instead I used [SwingJS](https://github.com/gajus/swing), a swiping lib build on top of [HammerJS](http://hammerjs.github.io/).
 
 2. Logic: [Redux](http://redux.js.org/) for managing the App State and API request. It's giving the current state of the whole app. All the action dispatched are visible thanks to the [Redux Logger Middleware](https://github.com/fcomb/redux-logger). The [Redux Thunk Middleware](https://github.com/gaearon/redux-thunk) is enabling function to be dispatched as well(useful for API calls). [React](https://facebook.github.io/react/) is simply used for the UI components and is mapped to [Redux](http://redux.js.org/) events with [React-Redux](https://github.com/rackt/react-redux). 
 
@@ -40,8 +40,7 @@ All is written in ES6 or ES2015 for the hipsters, transpiled by [Babel-Loader](h
 
 ## To do
 
-  * Implement [ImmutableJS](https://facebook.github.io/immutable-js/) for the state object
-  * Modify ImageSwiper structure for adding In and Out animation and gestures
+  * Implement [ImmutableJS](https://facebook.github.io/immutable-js/) for increasing the performances on the state object.
   * Add User Login and persistant data 
   * Learn [ELM](http://elm-lang.org/)
 
